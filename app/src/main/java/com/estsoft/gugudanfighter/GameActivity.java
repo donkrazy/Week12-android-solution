@@ -41,6 +41,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        // Button 타입이 아닐 수 없지만, 변경 될 수 있으니깐...
+        if( v instanceof Button == false ) {
+            return;
+        }
+
+        String textButton = ((Button) v).getText().toString();
+
+        // 0 또는 양의 정수가 아니면...
+        if( textButton.matches("\\d+") == false ) {
+            return;
+        }
+
+        int answer = Integer.parseInt( textButton );
+        if( answer == correctAnswer ) {
+            // 정답 수 증가
+            correctAnswer++;
+        }
+
+        updateScore();
         newQuestion();
     }
 
@@ -95,13 +114,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         final int answerCount = answerButtons.length;
 
         // 답 과 문제 세팅을 위한 랜덤 순서
-        int randomOrderAnswer = randomize(0, answerCount);
+        int randomOrderAnswer = randomize(0, answerCount );
+        System.out.println( "--------------------->" + randomOrderAnswer );
 
         // 세팅된 답 배열 ( 중복 체크을 위해서 )
         int[] answers = new int[answerCount];
 
         // 세팅 시작
-        for (int i = 0; i < answerCount; i++) {
+        int index = 0;
+        while ( index < answerCount ) {
             final int operandLeft = randomize(1, 9);
             final int operandRight = randomize(1, 9);
             final int result = operandLeft * operandRight;
@@ -112,16 +133,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 continue;
             }
 
-            answers[i] = result;
-            answerButtons[i].setText("" + result);
+            answers[index] = result;
+            answerButtons[index].setText("" + result);
 
             // 답과 문제 세팅
-            if( randomOrderAnswer == i ) {
+            if( randomOrderAnswer == index ) {
+                System.out.println( "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
                 correctAnswer = result;
                 ( (TextView) findViewById(R.id.textViewLeftOperand ) ).setText( "" + operandLeft );
                 ( (TextView) findViewById(R.id.textViewRightOperand ) ).setText( "" + operandRight );
             }
+
+            index++;
         }
+
+        // 문제 수 증가
+        questionCount++;
     }
 
     // int 배열에 값이 있는 검사하는 메서드
