@@ -5,12 +5,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private int correctAnswer;
+    private int correctAnswerCount;
+    private int questionCount;
+
     private Button[] answerButtons;
+    private TextView tvScore;
+    private TextView tvLastTime;
+
+    private static final int TIME_LIMITS = 30; //seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +57,29 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             answerButtons[i].setOnClickListener(this);
         }
 
+        // TextView 위젯 세팅 / 초기화
+        tvScore = (TextView) findViewById( R.id.textViewScore );
+        tvLastTime = (TextView) findViewById( R.id.textViewLastTime );
+
+        updateScore();
+        updateLastTime( TIME_LIMITS );
+
         // 첫 문제 제출
         newQuestion();
     }
 
-    // 새문제 만드는 메서드
+    // 스코어를 화면에 엡데이트 하는 메서드
+    private void updateScore() {
+        tvScore.setText( correctAnswerCount + "/" + questionCount );
+    }
+
+    // 남은 시간을 화면에 업데이트 하는 메서드
+    private void updateLastTime( int lastTime ) {
+        tvLastTime.setText( "" + lastTime );
+    }
+
+
+    // 새문제 만드는® 메서드
     private void newQuestion() {
         // 답의 개수
         final int answerCount = answerButtons.length;
@@ -78,6 +105,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         // 답 세팅을 위한 랜덤 순서
         int randomOrderAnswer = randomize( 0, answerCount );
+        correctAnswer = answers[ randomOrderAnswer ];
     }
 
     // int 배열에 값이 있는 검사하는 메서드
