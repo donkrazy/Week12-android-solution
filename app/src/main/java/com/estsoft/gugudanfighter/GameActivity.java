@@ -1,5 +1,6 @@
 package com.estsoft.gugudanfighter;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -55,12 +56,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         int answer = Integer.parseInt( textButton );
         if( answer == correctAnswer ) {
-            // 정답 수 증가
-            correctAnswer++;
+            correctAnswerCount++;
         }
-
         updateScore();
         newQuestion();
+    }
+
+    // 게임 중 back button 를 누른 경우
+    @Override
+    public void onBackPressed() {
+        timer.cancel();
+        finish();
+        //super.onBackPressed();
     }
 
     // 게임 초기화 하는 메서드
@@ -115,7 +122,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         // 답 과 문제 세팅을 위한 랜덤 순서
         int randomOrderAnswer = randomize(0, answerCount );
-        System.out.println( "--------------------->" + randomOrderAnswer );
 
         // 세팅된 답 배열 ( 중복 체크을 위해서 )
         int[] answers = new int[answerCount];
@@ -138,15 +144,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             // 답과 문제 세팅
             if( randomOrderAnswer == index ) {
-                System.out.println( "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );
                 correctAnswer = result;
                 ( (TextView) findViewById(R.id.textViewLeftOperand ) ).setText( "" + operandLeft );
                 ( (TextView) findViewById(R.id.textViewRightOperand ) ).setText( "" + operandRight );
             }
-
             index++;
         }
-
         // 문제 수 증가
         questionCount++;
     }
@@ -158,7 +161,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             }
         }
-
         return false;
     }
 
@@ -176,6 +178,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 // 게임 종료
                 timer.cancel();
 
+                // ResultActivity로 이동
+                Intent intent = new Intent( GameActivity.this, ResultActivity.class );
+                intent.putExtra( "correctAnswerCount",  correctAnswerCount );
+                intent.putExtra( "questionCount",  questionCount );
+                startActivity( intent );
+
+                // Activity 종료
+                finish();
                 return;
             }
 
