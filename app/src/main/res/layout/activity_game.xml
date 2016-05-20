@@ -129,7 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="초"
-        android:id="@+id/textView21"
+        android:id="@+id/textView22"
         android:textSize="18dp"
         android:textColor="#000"
         android:layout_alignParentRight="true"
@@ -161,7 +161,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="9"
-        android:id="@+id/textView9"
+        android:id="@+id/textViewRightOperand"
         android:textSize="52dp"
         android:textColor="#000"
         android:layout_alignTop="@+id/textView8"
@@ -186,14 +186,14 @@
         android:id="@+id/textViewLastTime"
         android:textSize="18dp"
         android:textColor="#000"
-        android:layout_toLeftOf="@+id/textView21"
-        android:layout_toStartOf="@+id/textView21" />
+        android:layout_toLeftOf="@+id/textView22"
+        android:layout_toStartOf="@+id/textView22" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="9"
-        android:id="@+id/textView7"
+        android:id="@+id/textViewLeftOperand"
         android:textSize="52dp"
         android:textColor="#000"
         android:layout_alignTop="@+id/textView8"
